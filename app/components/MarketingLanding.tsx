@@ -152,7 +152,7 @@ const testimonials = [
   {
     quote:
       "Our storefront finally looks maintained from the street. Scheduling is easy and the work is consistently professional.",
-    name: "Keisha M.",
+    name: "Keisha R.",
     context: "Commercial maintenance customer",
   },
 ];
