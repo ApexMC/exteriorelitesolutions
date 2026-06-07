@@ -146,7 +146,7 @@ const testimonials = [
   {
     quote:
       "They refreshed our mulch beds and trimmed everything around the house. The property looked brighter the same afternoon.",
-    name: "Daniel R.",
+    name: "Daniel W.",
     context: "Landscape cleanup customer",
   },
   {
