@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
 import { animate, stagger } from "animejs";
+import { Mail, Phone, MapPin, Calendar, Leaf, Scissors, Shield, Flower2, Sprout, Sparkles } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -18,49 +19,61 @@ const services = [
     title: "Weekly Lawn Mowing",
     description:
       "Consistent cuts, clean edging, and tidy blow-off service that keeps curb appeal on schedule.",
-    icon: "mowing",
+    icon: <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="5" cy="19" r="2" />
+            <circle cx="19" cy="19" r="2" />
+            
+            <path d="M2 17h20c0-4-2-6-4-6H6c-2 0-4 2-4 6z" />
+
+            <path d="M8 11V7h8v4" />
+            <rect x="7" y="3" width="10" height="4" rx="1" />
+            
+            <path d="M12 11l-3 6" />
+            <path d="M12 11l3 6" />
+            <circle cx="12" cy="11" r="1" />
+          </svg>,
   },
   {
     title: "Lawn Maintenance",
     description:
       "Routine care plans for healthy grass, crisp edges, and properties that always feel cared for.",
-    icon: "maintenance",
+    icon: <Shield />,
   },
   {
     title: "Landscaping",
     description:
       "Planting beds, bed reshaping, rock accents, and landscape refreshes planned around your property.",
-    icon: "landscape",
+    icon: <Flower2 />,
   },
   {
     title: "Mulching",
     description:
       "Fresh mulch installation that protects beds, sharpens borders, and gives your yard a finished look.",
-    icon: "mulch",
+    icon: <Sparkles />,
   },
   {
     title: "Hedge & Shrub Trimming",
     description:
       "Careful shaping and cleanup for shrubs, hedges, ornamental grasses, and front-entry plantings.",
-    icon: "trim",
+    icon: <Scissors />,
   },
   {
     title: "Seasonal Cleanups",
     description:
       "Spring and fall cleanup services for leaves, sticks, storm debris, overgrowth, and tired beds.",
-    icon: "season",
+    icon: <Leaf />,
   },
   {
     title: "Weed Control",
     description:
       "Practical weed reduction for beds, walkways, edges, and the spots that make a property look unkept.",
-    icon: "weed",
+    icon: <Sprout />,
   },
   {
     title: "Yard Cleanup",
     description:
       "One-time cleanup help for move-ins, listings, rentals, neglected corners, and post-project debris.",
-    icon: "cleanup",
+    icon: <Leaf />,
   },
 ];
 
@@ -117,21 +130,25 @@ const gallery = [
   {
     title: "Fresh Cut Lawn",
     description: "Weekly mowing with crisp stripes and clean hardscape edges.",
+    image: "/images/grass_cut.png",
     position: "center",
   },
   {
     title: "Mulch Refresh",
     description: "Defined beds, fresh color, and tidy borders around plantings.",
+    image: "/images/mulch_refresh.png",
     position: "right",
   },
   {
     title: "Landscape Cleanup",
     description: "Overgrowth trimmed back and beds reset for a cleaner entrance.",
+    image: "/images/landscape.png",
     position: "65% center",
   },
   {
     title: "Seasonal Maintenance",
     description: "Leaves, debris, and tired growth cleared before the next season.",
+    image: "/images/lawn-hero.png",
     position: "left",
   },
 ];
@@ -158,10 +175,10 @@ const testimonials = [
 ];
 
 const contactDetails = [
-  { label: "Phone", value: "(555) 123-LAWN" },
-  { label: "Email", value: "contact@exteriorelitesolutionsllc.com" },
-  { label: "Location", value: "Serving Tell City, IN and surrounding areas" },
-  { label: "Hours", value: "Monday: 8:00 AM-6:00 PM\nTuesday: 8:00 AM - 6:00 PM\nWednesday: 8:00 AM - 6:00 PM\nThursday: 8:00 AM - 6:00 PM\nFriday: 8:00 AM - 6:00 PM" },
+  { label: "Phone", value: "(812) 661-6958", icon: Phone },
+  { label: "Email", value: "contact@exteriorelitesolutionsllc.com", icon: Mail },
+  { label: "Location", value: "Serving Tell City, IN and surrounding areas", icon: MapPin },
+  { label: "Hours", value: "Monday: 8:00 AM-6:00 PM\nTuesday: 8:00 AM - 6:00 PM\nWednesday: 8:00 AM - 6:00 PM\nThursday: 8:00 AM - 6:00 PM\nFriday: 8:00 AM - 6:00 PM", icon: Calendar },
 ];
 
 function canAnimate() {
@@ -341,7 +358,7 @@ function Hero() {
           <div className="relative overflow-hidden rounded-lg border border-white/70 bg-zinc-900 shadow-2xl shadow-[#15351e]/20">
             <div className="relative aspect-4/3 min-h-75 lg:aspect-16/10">
               <Image
-                src="/images/lawn-hero.png"
+                src="/images/grass_cut.png"
                 alt="Freshly maintained green lawn with crisp mowing stripes and clean landscaping"
                 fill
                 fetchPriority="high"
@@ -407,11 +424,11 @@ function Services() {
             onMouseEnter={(event) => animateCard(event.currentTarget, true)}
             onMouseLeave={(event) => animateCard(event.currentTarget, false)}
           >
-            <ServiceIcon name={service.icon} />
-            <h3 className="mt-5 text-xl font-bold leading-7 text-[#4b8064]">
+            {service.icon}
+            <h3 className="mt-5 text-xl font-bold leading-7 text-white">
               {service.title}
             </h3>
-            <p className="mt-3 text-sm leading-7 text-[#839588]">
+            <p className="mt-3 text-sm leading-7 text-zinc-300">
               {service.description}
             </p>
           </article>
@@ -425,13 +442,13 @@ function About() {
   return (
     <section id="about" className="section-shell bg-zinc-900" data-animate="section">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
-        <div data-reveal-item className="relative min-h-105 overflow-hidden rounded-lg bg-[#1d3325]">
+        <div data-reveal-item className="relative min-h-105 overflow-hidden rounded-lg bg-zinc-900">
           <Image
-            src="/images/lawn-hero.png"
+            src="/images/ees_logo.png"
             alt="Professional lawn care result with trimmed beds, green turf, and clean edges"
-            fill
-            sizes="(min-width: 1024px) 42vw, 100vw"
-            className="object-cover"
+            width={600}
+            height={400}
+            className="object-fit object-center"
           />
           <div className="absolute inset-0 bg-[#16311f]/25" />
           <div className="absolute bottom-5 left-5 right-5 rounded-lg bg-zinc-800 border-zinc-700 p-5 shadow-xl backdrop-blur">
@@ -566,7 +583,7 @@ function Gallery() {
             className={`gallery-card ${index === 0 ? "md:row-span-2" : ""}`}
           >
             <Image
-              src="/images/lawn-hero.png"
+              src={item.image}
               alt={`${item.title} lawn care and landscaping project example`}
               fill
               sizes="(min-width: 768px) 50vw, 100vw"
@@ -712,17 +729,20 @@ function Contact() {
         <aside data-reveal-item className="rounded-lg border border-white/10 bg-zinc-900 p-6 text-[#4b8064] shadow-2xl shadow-black/20">
           <p className="section-eyebrow">Contact details</p>
           <h3 className="mt-4 text-2xl font-bold">Exterior Elite Solutions Lawn & Landscape</h3>
-          <p className="mt-3 text-sm leading-7 text-[#5c6a61]">
+          <p className="mt-3 text-sm leading-7 text-zinc-300">
             Ready for a cleaner, easier-to-maintain property? Reach out with your
             service needs, location, and preferred timing.
           </p>
           <dl className="mt-8 grid gap-4">
             {contactDetails.map((detail) => (
               <div key={detail.label} className="rounded-lg bg-zinc-800 p-4">
-                <dt className="text-xs font-bold text-[#0f6b3b]">{detail.label}</dt>
-                <dd className="mt-1 text-sm font-semibold leading-6 text-zinc-100">
+                <dt className="text-xs font-bold text-[#0f6b3b]">
+                  {detail.icon && <detail.icon className="ml-2 inline-block h-4 w-4 mr-1" />}
+                  {detail.label}
+                </dt>
+                <div className="mt-1 text-sm font-semibold leading-6 text-zinc-100 whitespace-pre-line">
                   {detail.value}
-                </dd>
+                </div>
               </div>
             ))}
           </dl>
