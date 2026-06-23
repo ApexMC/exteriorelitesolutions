@@ -10,7 +10,7 @@ const navLinks = [
   { label: "Services", href: "#services" },
   { label: "About", href: "#about" },
   { label: "Gallery", href: "#gallery" },
-  { label: "Reviews", href: "#reviews" },
+  /*{ label: "Reviews", href: "#reviews" },*/
   { label: "Contact", href: "#contact" },
 ];
 
@@ -640,12 +640,45 @@ function Testimonials() {
 }
 
 function Contact() {
-  const [formStatus, setFormStatus] = useState("");
+  const [status, setStatus] = useState<
+    "idle" | "sending" | "success" | "error"
+  >("idle");
+  const [message, setMessage] = useState("");
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-  const handleQuoteSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // TODO: Connect this front-end form to a quote request handler when a backend is available.
-    setFormStatus("Thanks. Your quote request is ready to connect to the future contact handler.");
+  async function onSubmit(a: React.FormEvent<HTMLFormElement>) {
+    a.preventDefault();
+    setStatus("sending");
+    setMessage("");
+
+    const form = a.currentTarget;
+    const formData = new FormData(form);
+
+    const payload = {
+      email: String(formData.get("email") || ""),
+      subject: `EES - New Contact Form: ${String(formData.get("name") || "")}`,
+      message: String("Name: " + formData.get("name") + "\n" + "Email: " + formData.get("email") + "\n" + "Phone: " + formData.get("phone") + "\n\n" + "Service Needed: " + formData.get("service") + "\n" + "Property Type: " + formData.get("propertyType") + "\n" + "Message: " + formData.get("message") || ""),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) throw new Error(data?.error || "Failed to send message.");
+
+      setStatus("success");
+      setMessage("Thanks! Your message has been sent.\nWe'll follow up with you as soon as possible.");
+      form.reset();
+    } catch (err: any) {
+      setStatus("error");
+      setMessage(err?.message || "Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -664,7 +697,7 @@ function Contact() {
 
           <form
             data-reveal-item
-            onSubmit={handleQuoteSubmit}
+            onSubmit={onSubmit}
             className="mt-9 grid gap-4 rounded-lg border border-white/10 bg-white/[0.07] p-5 md:grid-cols-2 md:p-6"
           >
             <div className="form-field">
@@ -714,13 +747,26 @@ function Contact() {
               />
             </div>
             <div className="md:col-span-2">
-              <button type="submit" className="quote-button w-full sm:w-auto">
-                Request a Free Quote
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="mb-2 inline-flex items-center justify-center rounded-lg bg-green-800 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-900 disabled:opacity-60 dark:text-white dark:hover:bg-green-900"
+                >
+                {status === "sending" ? "Sending..." : "Send message"}
               </button>
-              {formStatus ? (
-                <p className="mt-4 text-sm font-semibold text-[#dfeccf]" role="status">
-                  {formStatus}
-                </p>
+
+              {message ? (
+              <p
+                  className={`text-sm ${
+                  status === "success"
+                      ? "text-emerald-600 dark:text-emerald-400"
+                      : status === "error"
+                      ? "text-red-600 dark:text-red-400"
+                      : "text-zinc-600 dark:text-zinc-400"
+                  }`}
+              >
+                  {message}
+              </p>
               ) : null}
             </div>
           </form>
@@ -902,7 +948,6 @@ export default function MarketingLanding() {
         <WhyChooseUs />
         <ServiceAreas />
         <Gallery />
-        <Testimonials />
         <Contact />
       </main>
       <Footer />
