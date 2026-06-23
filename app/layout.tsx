@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     template: "%s | Lawn & Landscape",
   },
   description:
-    "Professional lawn care, mowing, landscaping, mulching, trimming, and seasonal cleanup services for residential and commercial properties.",
+    "Professional lawn care, mowing, landscaping, mulching, trimming, and seasonal cleanup services for residential and commercial properties in and around Tell City, IN.",
   applicationName: "Exterior Elite Solutions Lawn & Landscape",
-  authors: [{ name: "Exterior Elite Solutions Lawn & Landscape" }],
-  metadataBase: new URL("https://exteriorelitesolutions.example"),
+  authors: [{ name: "Exterior Elite Solutions LLC" }],
+  metadataBase: new URL("https://exteriorelitesolutions.com"),
 };
 
 export default function RootLayout({
